@@ -82,5 +82,53 @@ public class MainActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.btnAC)).setOnClickListener(v -> {
             tvInput.setText("");
         });
+
+        ((Button) findViewById(R.id.btnCompute)).setOnClickListener(v -> {
+            String expr = tvInput.getText().toString();
+            int n = 0;
+            for (int i=0; i<expr.length(); i++) {
+                if (expr.charAt(i) == '+' || expr.charAt(i) == '-' || expr.charAt(i) == '×' || expr.charAt(i) == '/')
+                    n++;
+            }
+            try {
+                double ans = computeFromExpr(expr, n+1);
+                ((TextView) findViewById(R.id.tvResult)).setText(Double.toString(ans));
+            } catch (Exception e) {
+                ((TextView) findViewById(R.id.tvResult)).setText("\uD83E\uDD21");
+            }
+        });
+    }
+
+    private double computeFromExpr(String expr, int n) throws Exception {
+        double n1;
+        StringBuilder temp1 = new StringBuilder(64);
+
+        if (n == 1) {
+            return Double.parseDouble(expr);
+        }
+
+        int j = 0;
+        while (expr.charAt(j) != '+' && expr.charAt(j) != '-' && expr.charAt(j) != '×' && expr.charAt(j) != '/') {
+            temp1.append(expr.charAt(j));
+            j++;
+        }
+        n1 = Double.parseDouble(new String(temp1));
+
+        switch(expr.charAt(j)) {
+            case '+':
+                n1 = n1 + computeFromExpr(expr.substring(j+1), n-1);
+                break;
+            case '-':
+                n1 = n1 - computeFromExpr(expr.substring(j+1), n-1);
+                break;
+            case '×':
+                n1 = n1 * computeFromExpr(expr.substring(j+1), n-1);
+                break;
+            case '/':
+                n1 = n1 / computeFromExpr(expr.substring(j+1), n-1);
+                break;
+        }
+
+        return n1;
     }
 }
