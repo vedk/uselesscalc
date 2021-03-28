@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This is a recursive function and has CS 101 vibes.
+     *
+     * @param expr A String which contains the expression to be evaluated
+     * @param n The number of numbers in <code>expr</code>
+     * @return The evaluated result
+     * @throws Exception Whenever anything goes wrong
+     */
     private double computeFromExpr(String expr, int n) throws Exception {
         double n1;
         StringBuilder temp1 = new StringBuilder(64);
